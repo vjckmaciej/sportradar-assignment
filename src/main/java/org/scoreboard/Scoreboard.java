@@ -23,6 +23,17 @@ public class Scoreboard {
         matches.put(newMatch.getMatchKey(), newMatch);
     }
 
+    public void updateScore(Team homeTeam, Team awayTeam, int homeScore, int awayScore) {
+        String key = homeTeam.teamSlug() + "-" + awayTeam.teamSlug();
+        Match match = matches.get(key);
+
+        if (match == null) {
+            throw new IllegalArgumentException("Match not found: " + key);
+        }
+
+        match.updateScore(homeScore, awayScore);
+    }
+
     public Optional<Match> getMatch(Team homeTeam, Team awayTeam) {
         String key = homeTeam.teamSlug() + "-" + awayTeam.teamSlug();
         return Optional.ofNullable(matches.get(key));

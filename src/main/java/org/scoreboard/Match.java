@@ -16,6 +16,14 @@ public class Match {
         this.matchKey = generateMatchKeyBasedOnTeamSlugs(homeTeam, awayTeam);
     }
 
+    public void updateScore(int homeScore, int awayScore) {
+        if (homeScore < 0 || awayScore < 0) {
+            throw new IllegalArgumentException("Scores cannot be negative");
+        }
+        this.homeTeamScore = homeScore;
+        this.awayTeamScore = awayScore;
+    }
+
     public Team getHomeTeam() {
         return homeTeam;
     }
