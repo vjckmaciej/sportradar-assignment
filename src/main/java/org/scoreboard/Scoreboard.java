@@ -34,6 +34,13 @@ public class Scoreboard {
         match.updateScore(homeScore, awayScore);
     }
 
+    public void endMatch(Team homeTeam, Team awayTeam) {
+        String key = homeTeam.teamSlug() + "-" + awayTeam.teamSlug();
+        if (matches.remove(key) == null) {
+            throw new IllegalArgumentException("Cannot end match - not found: " + key);
+        }
+    }
+
     public Optional<Match> getMatch(Team homeTeam, Team awayTeam) {
         String key = homeTeam.teamSlug() + "-" + awayTeam.teamSlug();
         return Optional.ofNullable(matches.get(key));

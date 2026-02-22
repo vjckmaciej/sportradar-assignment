@@ -105,4 +105,33 @@ class ScoreboardTest {
         // When & Then
         assertThrows(IllegalArgumentException.class, () -> scoreboard.updateScore(home, away, 1, 1));
     }
+
+    @Test
+    @DisplayName("Should successfully end a match and remove it from scoreboard")
+    void shouldEndMatch() {
+        // Given
+        Scoreboard scoreboard = new Scoreboard();
+        Team home = new Team("Mexico", "MEX");
+        Team away = new Team("Canada", "CAN");
+        scoreboard.addMatch(home, away);
+
+        // When
+        scoreboard.endMatch(home, away);
+
+        // Then
+        assertEquals(0, scoreboard.getOngoingMatchesCount(), "Scoreboard should be empty after ending the match");
+        assertTrue(scoreboard.getMatch(home, away).isEmpty(), "Match should no longer be accessible");
+    }
+
+    @Test
+    @DisplayName("Should throw exception when trying to end a match that does not exist")
+    void shouldThrowExceptionWhenEndingNonExistentMatch() {
+        // Given
+        Scoreboard scoreboard = new Scoreboard();
+        Team home = new Team("Mexico", "MEX");
+        Team away = new Team("Canada", "CAN");
+
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> scoreboard.endMatch(home, away));
+    }
 }
