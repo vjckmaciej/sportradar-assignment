@@ -3,6 +3,8 @@ package org.scoreboard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ScoreboardTest {
@@ -133,5 +135,45 @@ class ScoreboardTest {
 
         // When & Then
         assertThrows(IllegalArgumentException.class, () -> scoreboard.endMatch(home, away));
+    }
+
+    @Test
+    @DisplayName("Should return summary sorted by total score and recency (The World Cup Example)")
+    void shouldReturnSummarySortedByScoreAndRecency() {
+        // Given
+        Scoreboard scoreboard = new Scoreboard();
+        Team mex = new Team("Mexico", "MEX");
+        Team can = new Team("Canada", "CAN");
+        Team spa = new Team("Spain", "SPA");
+        Team bra = new Team("Brazil", "BRA");
+        Team ger = new Team("Germany", "GER");
+        Team fra = new Team("France", "FRA");
+        Team uru = new Team("Uruguay", "URU");
+        Team ita = new Team("Italy", "ITA");
+        Team arg = new Team("Argentina", "ARG");
+        Team aus = new Team("Australia", "AUS");
+
+        scoreboard.addMatch(mex, can);
+        scoreboard.addMatch(spa, bra);
+        scoreboard.addMatch(ger, fra);
+        scoreboard.addMatch(uru, ita);
+        scoreboard.addMatch(arg, aus);
+
+        scoreboard.updateScore(mex, can, 0, 5);
+        scoreboard.updateScore(spa, bra, 10, 2);
+        scoreboard.updateScore(ger, fra, 2, 2);
+        scoreboard.updateScore(uru, ita, 6, 6);
+        scoreboard.updateScore(arg, aus, 3, 1);
+
+        // When
+        List<Match> summary = scoreboard.getTotalSummary();
+
+        // Then
+        assertEquals(5, summary.size());
+        assertEquals("URU", summary.get(0).getHomeTeam().teamSlug());
+        assertEquals("SPA", summary.get(1).getHomeTeam().teamSlug());
+        assertEquals("MEX", summary.get(2).getHomeTeam().teamSlug());
+        assertEquals("ARG", summary.get(3).getHomeTeam().teamSlug());
+        assertEquals("GER", summary.get(4).getHomeTeam().teamSlug());
     }
 }

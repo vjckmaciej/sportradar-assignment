@@ -24,6 +24,14 @@ public class Match {
         this.awayTeamScore = awayScore;
     }
 
+    public void setInsertionCounter(int insertionCounter) {
+        this.insertionCounter = insertionCounter;
+    }
+
+    public int getTotalScore() {
+        return homeTeamScore + awayTeamScore;
+    }
+
     public Team getHomeTeam() {
         return homeTeam;
     }

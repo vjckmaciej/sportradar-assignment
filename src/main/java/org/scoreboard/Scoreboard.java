@@ -20,7 +20,19 @@ public class Scoreboard {
             throw new IllegalStateException("Match already exists");
         }
 
+        globalCounter++;
+        newMatch.setInsertionCounter(globalCounter);
+
         matches.put(newMatch.getMatchKey(), newMatch);
+    }
+
+    public List<Match> getTotalSummary() {
+        return matches.values().stream()
+                .sorted(Comparator
+                        .comparingInt(Match::getTotalScore)
+                        .thenComparingInt(Match::getInsertionCounter)
+                        .reversed())
+                .toList();
     }
 
     public void updateScore(Team homeTeam, Team awayTeam, int homeScore, int awayScore) {
