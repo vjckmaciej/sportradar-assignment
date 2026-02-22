@@ -176,4 +176,31 @@ class ScoreboardTest {
         assertEquals("ARG", summary.get(3).getHomeTeam().teamSlug());
         assertEquals("GER", summary.get(4).getHomeTeam().teamSlug());
     }
+
+    @Test
+    @DisplayName("Should not allow a team to play against itself")
+    void shouldNotAllowMatchAgainstSelf() {
+        // Given
+        Scoreboard scoreboard = new Scoreboard();
+        Team mex = new Team("Mexico", "MEX");
+
+        // When & Then
+        assertThrows(IllegalArgumentException.class, () -> scoreboard.addMatch(mex, mex));
+    }
+
+    @Test
+    @DisplayName("Should not allow a team to play in two matches simultaneously")
+    void shouldNotAllowTeamToPlayInTwoMatches() {
+        // Given
+        Scoreboard scoreboard = new Scoreboard();
+        Team mex = new Team("Mexico", "MEX");
+        Team can = new Team("Canada", "CAN");
+        Team bra = new Team("Brazil", "BRA");
+
+        // When & Then
+        scoreboard.addMatch(mex, can);
+
+        assertThrows(IllegalStateException.class, () -> scoreboard.addMatch(mex, bra));
+        assertThrows(IllegalStateException.class, () -> scoreboard.addMatch(bra, can));
+    }
 }

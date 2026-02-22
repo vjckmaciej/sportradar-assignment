@@ -14,15 +14,20 @@ public class Scoreboard {
             throw new IllegalArgumentException("Teams cannot be null");
         }
 
-        Match newMatch = new Match(homeTeam, awayTeam);
-
-        if (matches.containsKey(newMatch.getMatchKey())) {
-            throw new IllegalStateException("Match already exists");
+        if (homeTeam.teamSlug().equals(awayTeam.teamSlug())) {
+            throw new IllegalArgumentException("A team cannot play against itself");
         }
 
+        boolean isAnyTeamBusy = matches.values().stream()
+                .anyMatch(m -> isTeamInvolved(m, homeTeam) || isTeamInvolved(m, awayTeam));
+
+        if (isAnyTeamBusy) {
+            throw new IllegalStateException("One of the teams is already playing another match");
+        }
+
+        Match newMatch = new Match(homeTeam, awayTeam);
         globalCounter++;
         newMatch.setInsertionCounter(globalCounter);
-
         matches.put(newMatch.getMatchKey(), newMatch);
     }
 
@@ -60,5 +65,10 @@ public class Scoreboard {
 
     protected int getOngoingMatchesCount() {
         return matches.size();
+    }
+
+    private boolean isTeamInvolved(Match match, Team team) {
+        return match.getHomeTeam().teamSlug().equals(team.teamSlug()) ||
+                match.getAwayTeam().teamSlug().equals(team.teamSlug());
     }
 }
