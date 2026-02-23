@@ -16,6 +16,13 @@ public class Match {
         this.matchKey = generateMatchKeyBasedOnTeamSlugs(homeTeam, awayTeam);
     }
 
+    /**
+     * Updates the current score.
+     *
+     * @param homeScore non-negative score for the home team
+     * @param awayScore non-negative score for the away team
+     * @throws IllegalArgumentException if any score is negative
+     */
     public void updateScore(int homeScore, int awayScore) {
         if (homeScore < 0 || awayScore < 0) {
             throw new IllegalArgumentException("Scores cannot be negative");
@@ -24,12 +31,15 @@ public class Match {
         this.awayTeamScore = awayScore;
     }
 
-    public void setInsertionCounter(int insertionCounter) {
-        this.insertionCounter = insertionCounter;
-    }
-
+    /**
+     * Calculates total goals scored in the match.
+     */
     public int getTotalScore() {
         return homeTeamScore + awayTeamScore;
+    }
+
+    public void setInsertionCounter(int insertionCounter) {
+        this.insertionCounter = insertionCounter;
     }
 
     public Team getHomeTeam() {

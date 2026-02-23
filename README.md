@@ -14,3 +14,25 @@ Business rules:
 Prerequisites
 - jdk 17 or higher
 - maven for dependency management
+
+## how to run
+this project uses the maven wrapper, so you don't need to install maven manually
+
+### run tests
+to verify the logic (12 tests):
+```bash
+# windows
+mvnw.cmd test
+# linux/mac
+./mvnw test
+```
+
+### run demo
+to see the live scoreboard summary on your console:
+
+```bash
+# windows
+mvnw.cmd compile exec:java -Dexec.mainClass="org.scoreboard.Main"
+# linux/mac
+./mvnw compile exec:java -Dexec.mainClass="org.scoreboard.Main"
+```
